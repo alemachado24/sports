@@ -133,23 +133,29 @@ with option1:
     list_dates =  upcoming_games['Date'].sort_values(ascending=True).unique()
     dates = st.selectbox('Date', list_dates)
     try:
-        filtered_dates = upcoming_games[(upcoming_games['Date']==dates)]
-        upcoming_games_color2 = filtered_dates.style.format(precision=0).applymap(highlight_green, subset=['prob1','prob2'])
-#         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(upcoming_games_color2)
+        try:
+            filtered_dates = upcoming_games[(upcoming_games['Date']==dates)]
+            upcoming_games_color2 = filtered_dates.style.format(precision=0).applymap(highlight_green, subset=['prob1','prob2'])
+    #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.dataframe(upcoming_games_color2)
+        except:
+            st.dataframe(upcoming_games_color)
     except:
-        st.dataframe(upcoming_games_color)
+        st.warning('Check later for Upcoming Games')
 with option2:
     st.header('Past Games')
     selected_team_full = st.multiselect('',team_names,default = team_names[5])
     try:
-        filtered_both_teams = combined_list2[(combined_list2['team1']==selected_team_full[0]) | (combined_list2['team2']==selected_team_full[0])]
-        filtered_both_teams2= filtered_both_teams.style.hide_index().format(precision=0)
-#         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(filtered_both_teams2)
+        try:
+            filtered_both_teams = combined_list2[(combined_list2['team1']==selected_team_full[0]) | (combined_list2['team2']==selected_team_full[0])]
+            filtered_both_teams2= filtered_both_teams.style.hide_index().format(precision=0)
+    #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.dataframe(filtered_both_teams2)
+        except:
+            combined_list22= combined_list2.style.hide_index().format(precision=0)
+            st.dataframe(combined_list22)
     except:
-#         combined_list22= combined_list2.style.hide_index().format(precision=0)
-        st.dataframe(combined_list2)
+        st.warning('Check later for Upcoming Games')
 
 
 ###################################### MLB ENDS ##############################################
@@ -255,24 +261,30 @@ with option1_nba:
     list_dates_nba =  upcoming_games_nba['date'].sort_values(ascending=True).unique()
     dates_nba = st.selectbox('date', list_dates_nba)
     try:
-        filtered_dates_nba = upcoming_games_nba[(upcoming_games_nba['date']==dates_nba)]
-        upcoming_games_color2_nba = filtered_dates_nba.style.format(precision=3).applymap(highlight_green_nba, subset=['rating_prob1','rating_prob2'])
-#         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(upcoming_games_color2_nba)
+        try:
+            filtered_dates_nba = upcoming_games_nba[(upcoming_games_nba['date']==dates_nba)]
+            upcoming_games_color2_nba = filtered_dates_nba.style.format(precision=3).applymap(highlight_green_nba, subset=['rating_prob1','rating_prob2'])
+    #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.dataframe(upcoming_games_color2_nba)
+        except:
+            st.dataframe(upcoming_games_color_nba)
     except:
-        st.dataframe(upcoming_games_color_nba)
+        st.warning('Check later for Upcoming Games')
 with option2_nba:
     st.header('Past Games')
     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
     try:
-        filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
-        filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
-#         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(filtered_both_teams2_nba)
+        try:
+            filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
+            filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
+    #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.dataframe(filtered_both_teams2_nba)
+        except:
+            combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
+            st.dataframe(combined_list22_nba)
+    #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
     except:
-#         combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-        st.dataframe(combined_list2_nba)
-#         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
+        st.warning('Check later for Past Games')
 
 
 ###################################### NBA ENDS ##############################################
@@ -391,7 +403,10 @@ with option1_nfl:
 #         st.dataframe(upcoming_games_color_soccer)
 with option2_nfl:
     st.header('Past Games')
-    st.dataframe(combined_list2_nfl)
+    try:
+        st.dataframe(combined_list2_nfl)
+    except:
+        st.warning('Check later for Past Games')
 # # #     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
 # # #     try:
 # # #         filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
@@ -514,15 +529,21 @@ with option1_nhl:
     list_dates_nhl =  upcoming_games_nhl['date'].sort_values(ascending=True).unique()
     dates_nhl = st.selectbox('date', list_dates_nhl)
     try:
-        filtered_dates_nhl = upcoming_games_nhl[(upcoming_games_nhl['date']==dates_nhl)]
-        upcoming_games_color2_nhl = filtered_dates_nhl.style.format(precision=3).applymap(highlight_green_nhl, subset=['prob1','prob2'])
-#         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(upcoming_games_color2_nhl)
+        try:
+            filtered_dates_nhl = upcoming_games_nhl[(upcoming_games_nhl['date']==dates_nhl)]
+            upcoming_games_color2_nhl = filtered_dates_nhl.style.format(precision=3).applymap(highlight_green_nhl, subset=['prob1','prob2'])
+    #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.dataframe(upcoming_games_color2_nhl)
+        except:
+            st.dataframe(upcoming_games_color_nhl)
     except:
-        st.dataframe(upcoming_games_color_nhl)
+        st.warning('Check later for Upcoming Games') 
 with option2_nhl:
     st.header('Past Games')
-    st.dataframe(combined_list2_nhl)
+    try:
+        st.dataframe(combined_list2_nhl)
+    except:
+        st.warning('Check later for Past Games')
 #     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
 #     try:
 #         filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
@@ -647,12 +668,15 @@ with option1_soccer:
     list_dates_soccer =  upcoming_games_soccer['datetime'].sort_values(ascending=True).unique()
     dates_soccer = st.selectbox('datetime', list_dates_soccer)
     try:
-        filtered_dates_soccer = upcoming_games_soccer[(upcoming_games_soccer['datetime']==dates_soccer)]
-        upcoming_games_color2_soccer = filtered_dates_soccer.style.format(precision=3).applymap(highlight_green_soccer, subset=['prob1','prob2','probtie'])
-#         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(upcoming_games_color2_soccer)
+        try:
+            filtered_dates_soccer = upcoming_games_soccer[(upcoming_games_soccer['datetime']==dates_soccer)]
+            upcoming_games_color2_soccer = filtered_dates_soccer.style.format(precision=3).applymap(highlight_green_soccer, subset=['prob1','prob2','probtie'])
+    #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.dataframe(upcoming_games_color2_soccer)
+        except:
+            st.dataframe(upcoming_games_color_soccer)
     except:
-        st.dataframe(upcoming_games_color_soccer)
+        st.warning('Check later for Upcoming Games')
 # with option2_nhl:
 #     st.header('Past Games')
 #     st.dataframe(combined_list2_nhl)
