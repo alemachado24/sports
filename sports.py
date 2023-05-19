@@ -270,8 +270,8 @@ with option2_nba:
 #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
         st.dataframe(filtered_both_teams2_nba)
     except:
-        combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-        st.dataframe(combined_list22_nba)
+#         combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
+        st.dataframe(combined_list2_nba)
 #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
 
 
