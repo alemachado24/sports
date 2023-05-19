@@ -148,8 +148,8 @@ with option2:
 #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
         st.dataframe(filtered_both_teams2)
     except:
-        combined_list22= combined_list2.style.hide_index().format(precision=0)
-        st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
+#         combined_list22= combined_list2.style.hide_index().format(precision=0)
+        st.dataframe(combined_list2)
 
 
 ###################################### MLB ENDS ##############################################
@@ -613,7 +613,7 @@ past_games_soccer = df_final_soccer.loc[df_final_soccer['status']=='post']
 
 # # # # st.dataframe(upcoming_games)
 
-upcoming_games_soccer=upcoming_games_soccer.drop(['status'], axis=1)
+upcoming_games_soccer=upcoming_games_soccer.drop(['status','group'], axis=1)
 
 
 
