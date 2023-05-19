@@ -146,16 +146,16 @@ with option2:
     st.header('Past Games')
     selected_team_full = st.multiselect('',team_names,default = team_names[5])
     try:
-        try:
-            filtered_both_teams = combined_list2[(combined_list2['team1']==selected_team_full[0]) | (combined_list2['team2']==selected_team_full[0])]
-            filtered_both_teams2= filtered_both_teams.style.hide_index().format(precision=0)
-    #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-            st.dataframe(filtered_both_teams2)
-        except:
-            combined_list22= combined_list2.style.hide_index().format(precision=0)
-            st.dataframe(combined_list22)
+      try:
+          filtered_both_teams = combined_list2[(combined_list2['team1']==selected_team_full[0]) | (combined_list2['team2']==selected_team_full[0])]
+          filtered_both_teams2= filtered_both_teams.style.hide_index().format(precision=0)
+  #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
+          st.dataframe(filtered_both_teams2)
+      except:
+          combined_list22= combined_list2.style.hide_index().format(precision=0)
+          st.dataframe(combined_list22)
     except:
-        st.warning('Check later for Upcoming Games')
+      st.warning('Check later for Past Games')
 
 
 ###################################### MLB ENDS ##############################################
@@ -274,17 +274,17 @@ with option2_nba:
     st.header('Past Games')
     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
     try:
-        try:
-            filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
-            filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
-    #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-            st.dataframe(filtered_both_teams2_nba)
-        except:
-            combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-            st.dataframe(combined_list22_nba)
-    #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
+      try:
+          filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
+          filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
+  #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
+          st.dataframe(filtered_both_teams2_nba)
+      except:
+          combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
+          st.dataframe(combined_list22_nba)
+  #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
     except:
-        st.warning('Check later for Past Games')
+      st.warning('Check later for Past Games')
 
 
 ###################################### NBA ENDS ##############################################
