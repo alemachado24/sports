@@ -556,7 +556,7 @@ past_games_soccer = df_final_soccer.loc[df_final_soccer['status']=='post']
 
 
 upcoming_games_soccer=upcoming_games_soccer.drop(['status'], axis=1)
-st.dataframe(upcoming_games_soccer)
+# st.dataframe(upcoming_games_soccer)
 
 
 def highlight_green_soccer(val):
