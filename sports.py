@@ -4,6 +4,7 @@ import streamlit as st
 import json
 from urllib.request import urlopen
 import plotly.express as px
+from datetime import datetime
 
 #cd Desktop/AleClasses/sports
 #streamlit run sports.py
@@ -94,6 +95,7 @@ df_final['team2'] = df_final['team2'] .map({'HOU': 'Astros', 'LAD': 'Dodgers','A
 # st.write(df2)
 
 upcoming_games = df_final.loc[df_final['status']=='pre']
+# st.dataframe(upcoming_games)
 past_games = df_final.loc[df_final['status']=='post']
 
 # st.dataframe(upcoming_games)
@@ -125,13 +127,19 @@ combined_list2=combined_list.sort_values(by=['Date'],ascending=False)
 
 groupped_scores = combined_list.groupby(['prob1','Results','Predicted']).size()
 
+# Get today's date
+today = datetime.now().date()
+
 st.title("MLB Forecast ⚾️")
 
 option1, option2 = st.columns(2)
 with option1:
     st.header('Upcoming Games')
     list_dates =  upcoming_games['Date'].sort_values(ascending=True).unique()
-    dates = st.selectbox('Date', list_dates)
+    # Filter the DataFrame
+    filtered_df = upcoming_games[pd.to_datetime(upcoming_games['Date']).dt.date >= today]
+#     st.dataframe(upcoming_games)
+    dates = st.selectbox('Date', filtered_df)
     try:
         try:
             filtered_dates = upcoming_games[(upcoming_games['Date']==dates)]
@@ -147,13 +155,13 @@ with option2:
     selected_team_full = st.multiselect('',team_names,default = team_names[5])
     try:
       try:
-        filtered_both_teams = combined_list2[(combined_list2['team1']==selected_team_full[0]) | (combined_list2['team2']==selected_team_full[0])]
-#         filtered_both_teams2= filtered_both_teams.style.hide_index().format(precision=0)
-#         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(filtered_both_teams)
+          filtered_both_teams = combined_list2[(combined_list2['team1']==selected_team_full[0]) | (combined_list2['team2']==selected_team_full[0])]
+          filtered_both_teams2= filtered_both_teams.style.hide_index().format(precision=0)
+  #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
+          st.dataframe(filtered_both_teams2)
       except:
-#         combined_list22= combined_list2.style.hide_index().format(precision=0)
-        st.dataframe(combined_list2)
+          combined_list22= combined_list2.style.hide_index().format(precision=0)
+          st.dataframe(combined_list22)
     except:
       st.warning('Check later for Past Games')
 
@@ -275,14 +283,14 @@ with option2_nba:
     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
     try:
       try:
-        filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
-#         filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
-#         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-        st.dataframe(filtered_both_teams_nba)
+          filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
+          filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
+  #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
+          st.dataframe(filtered_both_teams2_nba)
       except:
-        combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-        st.dataframe(combined_list22_nba)
-#         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
+          combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
+          st.dataframe(combined_list22_nba)
+  #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
     except:
       st.warning('Check later for Past Games')
 
@@ -356,10 +364,10 @@ df_final_nfl['prob1'] = df_final_nfl['prob1']*100
 
 # # # # st.write(df2)
 
-# upcoming_games_soccer = df_final_soccer.loc[df_final_soccer['status']=='pre']
+upcoming_games_nfl = df_final_nfl.loc[df_final_nfl['status']=='pre']
 past_games_nfl = df_final_nfl.loc[df_final_nfl['status']=='post']
 
-# # # # # st.dataframe(upcoming_games)
+# st.dataframe(df_final_nfl)
 
 # upcoming_games_soccer=upcoming_games_soccer.drop(['status'], axis=1)
 
@@ -407,16 +415,6 @@ with option2_nfl:
         st.dataframe(combined_list2_nfl)
     except:
         st.warning('Check later for Past Games')
-# # #     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
-# # #     try:
-# # #         filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
-# # #         filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
-# # # #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-# # #         st.dataframe(filtered_both_teams2_nba)
-# # #     except:
-# # #         combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-# # #         st.dataframe(combined_list22_nba)
-# # # #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
 
 
 ###################################### NFL ENDS ##############################################
@@ -426,13 +424,7 @@ with option2_nfl:
 
 ###################################### NHL STARTS ##############################################
 
-st.title("NHL Forecast 🏑")
-
-# team_names_nhl = ['Boston Celtics','Brooklyn Nets','Philadelphia 76ers','New York Knicks','Toronto Raptors','Milwaukee Bucks','Cleveland Cavaliers','Indiana Pacers','Chicago Bulls','Detroit Pistons','Atlanta Hawks','Miami Heat','Washington Wizards','Orlando Magic','Charlotte Hornets','Denver Nuggets','Portland Trail Blazers','Utah Jazz','Minnesota Timberwolves','Oklahoma City Thunder','Phoenix Suns','Los Angeles Clippers','Sacramento Kings','Golden State Warriors','Los Angeles Lakers','Memphis Grizzlies','New Orleans Pelicans','Dallas Mavericks','Houston Rockets','San Antonio Spurs']
-
-# team_names_nhl.sort()
-  
-    
+st.title("NHL Forecast 🏑")    
 # store the URL in url as 
 # parameter for urlopen
 url_nhl = f'https://projects.fivethirtyeight.com/{selected_year}-nhl-predictions/data.json'
@@ -453,9 +445,9 @@ df_nhl = pd.json_normalize(data_nhl)
 
 df_final_nhl=df_nhl.drop(['id','season','datetime','playoff','neutral','points1','points2', 'ot','elo1_pre','elo2_pre','elo1_post','elo2_post','leverage1','leverage2','quality','importance','game_rating'], axis=1)
 
-
-
 first_column_nhl = df_final_nhl.pop('date')
+
+# st.dataframe(df_nhl)
   
 # first_column) function
 df_final_nhl.insert(0, 'date', first_column_nhl)
@@ -466,38 +458,13 @@ df_final_nhl['prob2'] = df_final_nhl['prob2']*100
 df_final_nhl['prob1'] = df_final_nhl['prob1']*100
 df_final_nhl['otprob'] = df_final_nhl['otprob']*100
 
-# st.dataframe(df_final_nhl)
-
-# df_final_nba['team1'] = df_final_nba['team1'] .map({'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets','PHI': 'Philadelphia 76ers', 'NY': 'New York Knicks',
-#                                             'TOR': 'Toronto Raptors', 'MIL': 'Milwaukee Bucks','CLE': 'Cleveland Cavaliers', 'IND': 'Indiana Pacers',
-#                                             'CHI': 'Chicago Bulls', 'DET': 'Detroit Pistons','ATL': 'Atlanta Hawks', 'MIA': 'Miami Heat',
-#                                             'WSH': 'Washington Wizards', 'ORL': 'Orlando Magic','CHA': 'Charlotte Hornets', 'DEN': 'Denver Nuggets',
-#                                             'POR': 'Portland Trail Blazers', 'UTA': 'Utah Jazz','MIN': 'Minnesota Timberwolves', 'OKC': 'Oklahoma City Thunder',
-#                                             'PHX': 'Phoenix Suns', 'LAC': 'Los Angeles Clippers','SAC': 'Sacramento Kings', 'GS': 'Golden State Warriors',
-#                                             'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies','NO': 'New Orleans Pelicans', 'DAL': 'Dallas Mavericks',
-#                                             'HOU': 'Houston Rockets', 'SA': 'San Antonio Spurs'})
-
-# df_final_nba['team2'] = df_final_nba['team2'] .map({'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets','PHI': 'Philadelphia 76ers', 'NY': 'New York Knicks',
-#                                             'TOR': 'Toronto Raptors', 'MIL': 'Milwaukee Bucks','CLE': 'Cleveland Cavaliers', 'IND': 'Indiana Pacers',
-#                                             'CHI': 'Chicago Bulls', 'DET': 'Detroit Pistons','ATL': 'Atlanta Hawks', 'MIA': 'Miami Heat',
-#                                             'WSH': 'Washington Wizards', 'ORL': 'Orlando Magic','CHA': 'Charlotte Hornets', 'DEN': 'Denver Nuggets',
-#                                             'POR': 'Portland Trail Blazers', 'UTA': 'Utah Jazz','MIN': 'Minnesota Timberwolves', 'OKC': 'Oklahoma City Thunder',
-#                                             'PHX': 'Phoenix Suns', 'LAC': 'Los Angeles Clippers','SAC': 'Sacramento Kings', 'GS': 'Golden State Warriors',
-#                                             'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies','NO': 'New Orleans Pelicans', 'DAL': 'Dallas Mavericks',
-#                                             'HOU': 'Houston Rockets', 'SA': 'San Antonio Spurs'})
-
-# # df2 = df_final.reset_index(drop=True)
-
-# # # st.write(df2)
 
 upcoming_games_nhl = df_final_nhl.loc[df_final_nhl['status']=='pre']
 past_games_nhl = df_final_nhl.loc[df_final_nhl['status']=='post']
 
-# # # st.dataframe(upcoming_games)
+# st.dataframe(upcoming_games_nhl)
 
 upcoming_games_nhl=upcoming_games_nhl.drop(['status','score1','score2'], axis=1)
-
-
 
 
 def highlight_green_nhl(val):
@@ -520,40 +487,34 @@ combined_list_nhl = pd.concat([past_games_nhl,column_results_nhl,column_predicte
 combined_list_nhl=combined_list_nhl.drop(['status'], axis=1)
 combined_list2_nhl=combined_list_nhl.sort_values(by=['date'],ascending=False)
 
-# # groupped_scores = combined_list.groupby(['prob1','Results','Predicted']).size()
-
+# st.dataframe(upcoming_games_nhl)
 
 option1_nhl, option2_nhl = st.columns(2)
 with option1_nhl:
     st.header('Upcoming Games')
-    list_dates_nhl =  upcoming_games_nhl['date'].sort_values(ascending=True).unique()
-    dates_nhl = st.selectbox('date', list_dates_nhl)
-    try:
+    if upcoming_games_nhl.empty:
+        st.text("Current Season completed")
+    else:
+#         st.text('here2')
+        list_dates_nhl =  upcoming_games_nhl['date'].sort_values(ascending=True).unique()
+        st.dataframe(upcoming_games_nhl)
+        dates_nhl = st.selectbox('date', list_dates_nhl)
         try:
-            filtered_dates_nhl = upcoming_games_nhl[(upcoming_games_nhl['date']==dates_nhl)]
-            upcoming_games_color2_nhl = filtered_dates_nhl.style.format(precision=3).applymap(highlight_green_nhl, subset=['prob1','prob2'])
-    #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
-            st.dataframe(upcoming_games_color2_nhl)
+            try:
+                filtered_dates_nhl = upcoming_games_nhl[(upcoming_games_nhl['date']==dates_nhl)]
+                upcoming_games_color2_nhl = filtered_dates_nhl.style.format(precision=3).applymap(highlight_green_nhl, subset=['prob1','prob2'])
+        #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
+                st.dataframe(upcoming_games_color2_nhl)
+            except:
+                st.dataframe(upcoming_games_color_nhl)
         except:
-            st.dataframe(upcoming_games_color_nhl)
-    except:
-        st.warning('Check later for Upcoming Games') 
+            st.warning('Check later for Upcoming Games') 
 with option2_nhl:
     st.header('Past Games')
     try:
         st.dataframe(combined_list2_nhl)
     except:
         st.warning('Check later for Past Games')
-#     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
-#     try:
-#         filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
-#         filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
-# #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-#         st.dataframe(filtered_both_teams2_nba)
-#     except:
-#         combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-#         st.dataframe(combined_list22_nba)
-# #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
 
 
 ###################################### NHL ENDS ##############################################
@@ -562,11 +523,6 @@ with option2_nhl:
 
 st.title("Soccer Forecast ⚽️")
 
-# team_names_nhl = ['Boston Celtics','Brooklyn Nets','Philadelphia 76ers','New York Knicks','Toronto Raptors','Milwaukee Bucks','Cleveland Cavaliers','Indiana Pacers','Chicago Bulls','Detroit Pistons','Atlanta Hawks','Miami Heat','Washington Wizards','Orlando Magic','Charlotte Hornets','Denver Nuggets','Portland Trail Blazers','Utah Jazz','Minnesota Timberwolves','Oklahoma City Thunder','Phoenix Suns','Los Angeles Clippers','Sacramento Kings','Golden State Warriors','Los Angeles Lakers','Memphis Grizzlies','New Orleans Pelicans','Dallas Mavericks','Houston Rockets','San Antonio Spurs']
-
-# team_names_nhl.sort()
-  
-    
 # store the URL in url as 
 # parameter for urlopen
 url_soccer = f'https://projects.fivethirtyeight.com/soccer-predictions/data.json'
@@ -588,55 +544,19 @@ df_soccer = pd.json_normalize(data_soccer)
 df_final_soccer=df_soccer.drop(['id','league_id','leg','team1_id','team2_id','team1_code','team2_code', 'round','matchday','quality','leverage'], axis=1)
 
 
-
-# first_column_nhl = df_final_nhl.pop('date')
-  
-# # first_column) function
-# df_final_nhl.insert(0, 'date', first_column_nhl)
-# # # # df_final['team1'] = df_final['team1'].str.replace(df_final['team1'],selected_team_full[0])
-
-
 df_final_soccer['prob2'] = df_final_soccer['prob2']*100
 df_final_soccer['prob1'] = df_final_soccer['prob1']*100
 df_final_soccer['probtie'] = df_final_soccer['probtie']*100
 
 df_final_soccer['datetime'] = pd.to_datetime(df_final_soccer['datetime']).dt.date
 
-# df['Date'] = pd.to_datetime(df["InsertedDateTime"]).dt.date
-# .date()
-
-# st.dataframe(df_final_soccer)
-
-# # df_final_nba['team1'] = df_final_nba['team1'] .map({'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets','PHI': 'Philadelphia 76ers', 'NY': 'New York Knicks',
-# #                                             'TOR': 'Toronto Raptors', 'MIL': 'Milwaukee Bucks','CLE': 'Cleveland Cavaliers', 'IND': 'Indiana Pacers',
-# #                                             'CHI': 'Chicago Bulls', 'DET': 'Detroit Pistons','ATL': 'Atlanta Hawks', 'MIA': 'Miami Heat',
-# #                                             'WSH': 'Washington Wizards', 'ORL': 'Orlando Magic','CHA': 'Charlotte Hornets', 'DEN': 'Denver Nuggets',
-# #                                             'POR': 'Portland Trail Blazers', 'UTA': 'Utah Jazz','MIN': 'Minnesota Timberwolves', 'OKC': 'Oklahoma City Thunder',
-# #                                             'PHX': 'Phoenix Suns', 'LAC': 'Los Angeles Clippers','SAC': 'Sacramento Kings', 'GS': 'Golden State Warriors',
-# #                                             'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies','NO': 'New Orleans Pelicans', 'DAL': 'Dallas Mavericks',
-# #                                             'HOU': 'Houston Rockets', 'SA': 'San Antonio Spurs'})
-
-# # df_final_nba['team2'] = df_final_nba['team2'] .map({'BOS': 'Boston Celtics', 'BKN': 'Brooklyn Nets','PHI': 'Philadelphia 76ers', 'NY': 'New York Knicks',
-# #                                             'TOR': 'Toronto Raptors', 'MIL': 'Milwaukee Bucks','CLE': 'Cleveland Cavaliers', 'IND': 'Indiana Pacers',
-# #                                             'CHI': 'Chicago Bulls', 'DET': 'Detroit Pistons','ATL': 'Atlanta Hawks', 'MIA': 'Miami Heat',
-# #                                             'WSH': 'Washington Wizards', 'ORL': 'Orlando Magic','CHA': 'Charlotte Hornets', 'DEN': 'Denver Nuggets',
-# #                                             'POR': 'Portland Trail Blazers', 'UTA': 'Utah Jazz','MIN': 'Minnesota Timberwolves', 'OKC': 'Oklahoma City Thunder',
-# #                                             'PHX': 'Phoenix Suns', 'LAC': 'Los Angeles Clippers','SAC': 'Sacramento Kings', 'GS': 'Golden State Warriors',
-# #                                             'LAL': 'Los Angeles Lakers', 'MEM': 'Memphis Grizzlies','NO': 'New Orleans Pelicans', 'DAL': 'Dallas Mavericks',
-# #                                             'HOU': 'Houston Rockets', 'SA': 'San Antonio Spurs'})
-
-# # # df2 = df_final.reset_index(drop=True)
-
-# # # # st.write(df2)
-
 upcoming_games_soccer = df_final_soccer.loc[df_final_soccer['status']=='pre']
+# st.dataframe(upcoming_games_soccer)
 past_games_soccer = df_final_soccer.loc[df_final_soccer['status']=='post']
 
-# # # # st.dataframe(upcoming_games)
 
-upcoming_games_soccer=upcoming_games_soccer.drop(['status','group'], axis=1)
-
-
+upcoming_games_soccer=upcoming_games_soccer.drop(['status'], axis=1)
+st.dataframe(upcoming_games_soccer)
 
 
 def highlight_green_soccer(val):
@@ -648,50 +568,26 @@ def highlight_green_soccer(val):
 upcoming_games_color_soccer = upcoming_games_soccer.style.format(precision=0).applymap(highlight_green, subset=['prob1','prob2','probtie'])
 
 
-# predicted_nhl = np.where((((past_games_nhl['score1']>past_games_nhl['score2']) & (past_games_nhl['prob1']>past_games_nhl['prob2'])) | ((past_games_nhl['score1']<past_games_nhl['score2']) & (past_games_nhl['prob1']<past_games_nhl['prob2']))) , 'Predicted', 'Turnaround')
-
-# new_analysis_nhl = np.where((past_games_nhl['score1']>past_games_nhl['score2']) , 'W', 'L')
-
-# column_results_nhl=pd.DataFrame(new_analysis_nhl, columns=['Results'])
-# column_predicted_nhl=pd.DataFrame(predicted_nhl, columns=['Predicted'])
-
-# combined_list_nhl = pd.concat([past_games_nhl,column_results_nhl,column_predicted_nhl], axis=1)
-# combined_list_nhl=combined_list_nhl.drop(['status'], axis=1)
-# combined_list2_nhl=combined_list_nhl.sort_values(by=['date'],ascending=False)
-
-# # # groupped_scores = combined_list.groupby(['prob1','Results','Predicted']).size()
-
-
 option1_soccer, option2_soccer = st.columns(2)
 with option1_soccer:
     st.header('Upcoming Games')
-    list_dates_soccer =  upcoming_games_soccer['datetime'].sort_values(ascending=True).unique()
-    dates_soccer = st.selectbox('datetime', list_dates_soccer)
-    try:
+    if upcoming_games_soccer.empty:
+        st.text("Current Season completed")
+    else:
+        list_dates_soccer =  upcoming_games_soccer['datetime'].sort_values(ascending=True).unique()
+        filtered_df_soccer = upcoming_games_soccer[pd.to_datetime(upcoming_games_soccer['datetime']).dt.date >= today]
+        dates_soccer = st.selectbox('datetime', filtered_df_soccer)
         try:
-            filtered_dates_soccer = upcoming_games_soccer[(upcoming_games_soccer['datetime']==dates_soccer)]
-            upcoming_games_color2_soccer = filtered_dates_soccer.style.format(precision=3).applymap(highlight_green_soccer, subset=['prob1','prob2','probtie'])
-    #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
-            st.dataframe(upcoming_games_color2_soccer)
+            try:
+                filtered_dates_soccer = upcoming_games_soccer[(upcoming_games_soccer['datetime']==dates_soccer)]
+                upcoming_games_color2_soccer = filtered_dates_soccer.style.format(precision=3).applymap(highlight_green_soccer, subset=['prob1','prob2','probtie'])
+        #         st.write(upcoming_games_color2.hide(axis=0).to_html(), unsafe_allow_html=True)
+                st.dataframe(upcoming_games_color2_soccer)
+            except:
+                st.dataframe(upcoming_games_color_soccer)
         except:
-            st.dataframe(upcoming_games_color_soccer)
-    except:
-        st.warning('Check later for Upcoming Games')
-# with option2_nhl:
-#     st.header('Past Games')
-#     st.dataframe(combined_list2_nhl)
-# #     selected_team_full_nba = st.multiselect('',team_names_nba,default = team_names_nba[5])
-# #     try:
-# #         filtered_both_teams_nba = combined_list2_nba[(combined_list2_nba['team1']==selected_team_full_nba[0]) | (combined_list2_nba['team2']==selected_team_full_nba[0])]
-# #         filtered_both_teams2_nba= filtered_both_teams_nba.style.hide_index().format(precision=0)
-# # #         st.write(filtered_both_teams2.hide(axis=0).to_html(), unsafe_allow_html=True)
-# #         st.dataframe(filtered_both_teams2_nba)
-# #     except:
-# #         combined_list22_nba= combined_list2_nba.style.hide_index().format(precision=0)
-# #         st.dataframe(combined_list22_nba)
-# # #         st.write(combined_list22.hide(axis=0).to_html(), unsafe_allow_html=True)
+            st.warning('Check later for Upcoming Games')
 
 
 ###################################### SOCCER ENDS ##############################################
 st.caption("Data Source: fivethirtyeight Website")# and pro-basketball-reference
-
